@@ -96,3 +96,46 @@ vector<string> huffmanCodes(string &s, vector<int> f)
     preorder(root, temp, ans);
     return ans;
 }
+// Given a Huffman MinHeap tree and an encoded binary string, complete the function huffDecode() to decode the string and return the original text. Each node of the tree contains a character and its frequency, where the special character $ represents internal nodes. Traverse the tree from the root using 0 for left and 1 for right, and whenever a leaf node is reached, add its character to the answer and restart traversal from the root.
+
+// Note: Compiler will take string s as an input and encode it in binary string internaly. 
+
+struct MinHeapNode
+{
+    char data;
+    int freq;
+    MinHeapNode *left, *right;
+};
+ string huffDecode(struct MinHeapNode* root, string binaryString) {
+        // Code here
+       // Special case: only one character in Huffman tree
+               if (root->left == NULL && root->right == NULL) {
+                   string ans;
+
+                   for (int i = 0; i < binaryString.size(); i++) {
+                       ans.push_back(root->data);
+                   }
+
+                   return ans;
+               }
+        string ans;
+        MinHeapNode * curr = root;
+        for(int i=0;i<binaryString.size();i++){
+            char ch = binaryString[i];
+            if(ch=='1'){
+               
+                curr = curr->right;
+            }
+            else{
+                
+                curr = curr->left;
+            }
+            
+            if(curr->data!='$'){
+                ans.push_back(curr->data);
+                curr = root;
+            }
+        }
+        
+        return ans;
+    }
